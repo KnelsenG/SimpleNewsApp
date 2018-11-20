@@ -1,0 +1,134 @@
+package ca.sheridancollege.simplenewsapp.ui.feedFragment
+
+import android.animation.LayoutTransition
+import android.os.Bundle
+import android.view.*
+import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import ca.sheridancollege.simplenewsapp.R
+import ca.sheridancollege.simplenewsapp.base.BaseFragment
+import ca.sheridancollege.simplenewsapp.databinding.FragmentFeedBinding
+import ca.sheridancollege.simplenewsapp.ext.snack
+import ca.sheridancollege.simplenewsapp.ui.feedFragment.adapter.ArticleAdapter
+import ca.sheridancollege.simplenewsapp.ui.feedFragment.adapter.LanguageAdapter
+import ca.sheridancollege.simplenewsapp.util.DataStatus
+
+class FeedFragment : BaseFragment() {
+
+    private lateinit var binding: FragmentFeedBinding
+    private lateinit var viewModel: FeedViewModel
+
+    private lateinit var articleAdapter: ArticleAdapter
+    private lateinit var languageAdapter: LanguageAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(FeedViewModel::class.java)
+
+        initObservables()
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentFeedBinding.inflate(inflater, container, false)
+
+        initBindings()
+        return binding.root
+    }
+
+    private fun initBindings() {
+
+        val linearLayoutManager = LinearLayoutManager(context)
+        val gridLayoutManager = GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false)
+
+        if (!::articleAdapter.isInitialized) {
+            articleAdapter = ArticleAdapter(viewModel.articleClickListener)
+        }
+        if (!::languageAdapter.isInitialized) {
+            languageAdapter = LanguageAdapter(viewModel.languageClickListener)
+        }
+
+        binding.apply {
+
+            (root as ViewGroup).layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
+
+            rvList.setHasFixedSize(true)
+            rvList.layoutManager = linearLayoutManager
+            rvList.swapAdapter(articleAdapter, true)
+
+            rvFilterLanguage.layoutManager = gridLayoutManager
+            rvFilterLanguage.swapAdapter(languageAdapter, true)
+
+            swipeRefreshLayout.setOnRefreshListener(viewModel.refreshListener)
+        }
+
+        binding.vm = viewModel
+    }
+
+    private fun initObservables() {
+
+        viewModel.articleSource.observe(this, Observer {
+            val adapter = binding.rvList.adapter as ArticleAdapter
+            it?.let { adapter.submitList(it) }
+        })
+
+        viewModel.languageSource.observe(this, Observer {
+            val adapter = binding.rvFilterLanguage.adapter as LanguageAdapter
+            it?.let { adapter.submitList(it) }
+        })
+
+        viewModel.articleOpenClickEvent.observe(this, Observer {
+            val action = FeedFragmentDirections.actionFeedAlbumFragmentToDetailAlbumFragment(it.url)
+            view?.findNavController()?.navigate(action)
+        })
+
+        viewModel.updateStatus.observe(this, Observer {
+            when (it) {
+                is DataStatus.Loading -> {
+                    viewModel.isRefreshing.set(true)
+                }
+                is DataStatus.Success -> {
+                    viewModel.updateSuccess()
+                }
+                is DataStatus.Error<*> -> {
+                    viewModel.updateError(it.data)
+                }
+            }
+        })
+
+        viewModel.snack.observe(this, Observer {
+            snack(it)
+        })
+
+        viewModel.start()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.menu_main, menu)
+
+        val searchItem = menu?.findItem(R.id.miSearch)
+        searchItem?.setOnActionExpandListener(viewModel.searchExpandListener)
+
+        val search = searchItem?.actionView as SearchView
+        search.setOnQueryTextListener(viewModel.searchTextListener)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when(item?.itemId){
+            R.id.miFilter -> {
+                viewModel.toggleFilter()
+                return true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    companion object {
+        const val TAG = "FeedArticleFragment"
+    }
+}
