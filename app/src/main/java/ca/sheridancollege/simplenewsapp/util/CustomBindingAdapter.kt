@@ -2,11 +2,13 @@ package ca.sheridancollege.simplenewsapp.util
 
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import ca.sheridancollege.simplenewsapp.di.module.core.GlideApp
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
+import java.util.*
 
 @BindingAdapter("app:is_refreshing")
 fun refreshStatus(swipeRefreshLayout: SwipeRefreshLayout, isRefreshing: Boolean) {
@@ -34,14 +36,13 @@ fun shouldHideImage(imageView: ImageView, source: String?) {
     }
 }
 
-@BindingAdapter("app:is_selected")
-fun isSelected(imageView: ImageView, source: Boolean) {
-    if (source){
-        imageView.setImageResource(android.R.drawable.ic_delete)
+@BindingAdapter("app:article_date")
+fun articleDate(textView: TextView, source: Calendar?) {
+    textView.text = if (source == null){
+        "N/A"
     } else {
-        imageView.setImageResource(android.R.color.white)
+        DateUtil.sdf.format(source.time)
     }
 }
-
 
 

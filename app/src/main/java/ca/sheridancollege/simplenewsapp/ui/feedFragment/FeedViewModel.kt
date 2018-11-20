@@ -9,19 +9,15 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import ca.sheridancollege.simplenewsapp.data.model.RoomArticle
-import ca.sheridancollege.simplenewsapp.data.model.RoomLanguage
 import ca.sheridancollege.simplenewsapp.data.repo.ArticleRepository
-import ca.sheridancollege.simplenewsapp.data.repo.LanguageRepository
 import ca.sheridancollege.simplenewsapp.enums.FeedType
 import ca.sheridancollege.simplenewsapp.ui.feedFragment.adapter.ArticleClickListener
-import ca.sheridancollege.simplenewsapp.ui.feedFragment.adapter.LanguageClickListener
 import ca.sheridancollege.simplenewsapp.util.DataStatus
 import ca.sheridancollege.simplenewsapp.util.SingleLiveEvent
 import javax.inject.Inject
 
 class FeedViewModel @Inject constructor(
-        articleRepository: ArticleRepository,
-        languageRepository: LanguageRepository
+        articleRepository: ArticleRepository
 ) : ViewModel() {
 
     val isRefreshing = ObservableBoolean(false)
@@ -35,14 +31,8 @@ class FeedViewModel @Inject constructor(
     private val refreshTrigger = MutableLiveData<Unit>()
 
     private val searchQuery = MutableLiveData<String>()
-    private val filterLanguages = MutableLiveData<MutableList<String>>()
 
-    private val all: LiveData<List<RoomArticle>> = Transformations.switchMap(
-            filterLanguages
-    ) {
-        articleRepository.getAll(it)
-    }
-
+    private val all: LiveData<List<RoomArticle>> = articleRepository.getAll()
     private val search: LiveData<List<RoomArticle>> = Transformations.switchMap(searchQuery) { articleRepository.search(it) }
 
     val articleSource: LiveData<List<RoomArticle>> = Transformations.switchMap(
@@ -54,7 +44,6 @@ class FeedViewModel @Inject constructor(
             null -> all
         }
     }
-    val languageSource = languageRepository.getAll()
 
     val emptyCheck: LiveData<Boolean> = Transformations.map(
             articleSource
@@ -82,20 +71,6 @@ class FeedViewModel @Inject constructor(
         }
     }
 
-    val languageClickListener: LanguageClickListener by lazy {
-        object : LanguageClickListener {
-            override fun onLanguageClick(language: RoomLanguage) {
-                if (language.selected){
-                    filterLanguages.value?.remove(language.value)
-                    language.selected = false
-                } else {
-                    filterLanguages.value?.add(language.value)
-                    language.selected = true
-                }
-            }
-        }
-    }
-
     val refreshListener: SwipeRefreshLayout.OnRefreshListener by lazy {
         SwipeRefreshLayout.OnRefreshListener {
             refreshTrigger.value = Unit
@@ -104,7 +79,6 @@ class FeedViewModel @Inject constructor(
 
     val searchExpandListener: MenuItem.OnActionExpandListener by lazy {
         object : MenuItem.OnActionExpandListener {
-            private var oldType: FeedType? = null
             override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
                 feedToggle.value = FeedType.SEARCH
                 return true
@@ -114,7 +88,6 @@ class FeedViewModel @Inject constructor(
                 feedToggle.value = FeedType.ALL
                 return true
             }
-
         }
     }
 

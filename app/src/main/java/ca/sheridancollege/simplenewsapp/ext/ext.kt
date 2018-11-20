@@ -4,9 +4,10 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
+import ca.sheridancollege.simplenewsapp.util.DateUtil
 import com.google.android.material.snackbar.Snackbar
+import java.util.*
 
 fun Context.isOnline(): Boolean {
     val cm = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -23,12 +24,6 @@ fun Context.isPackageAvailable(targetPackage: String): Boolean {
     }
 }
 
-private fun Context.toast(message: String, duration: Int = Toast.LENGTH_SHORT) = Toast.makeText(this, message, duration).show()
-
-fun Context.shortToast(message: String) = toast(message, Toast.LENGTH_SHORT)
-
-fun Context.longToast(message: String) = toast(message, Toast.LENGTH_LONG)
-
 fun Fragment.snack(
         message: String,
         actionMessage: String = "Dismiss",
@@ -37,8 +32,12 @@ fun Fragment.snack(
 ) {
     view?.let {
         Snackbar
-            .make(it, message, duration)
-            .setAction(actionMessage) { v -> action(v) }
-            .show()
+                .make(it, message, duration)
+                .setAction(actionMessage) { v -> action(v) }
+                .show()
     }
+}
+
+fun Calendar.toRFC3339(): String {
+    return DateUtil.outSdf.format(time)
 }

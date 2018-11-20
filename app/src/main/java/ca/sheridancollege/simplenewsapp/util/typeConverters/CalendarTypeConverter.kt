@@ -1,15 +1,13 @@
 package ca.sheridancollege.simplenewsapp.util.typeConverters
 
 import androidx.room.TypeConverter
-import java.text.SimpleDateFormat
+import ca.sheridancollege.simplenewsapp.util.DateUtil
 import java.util.*
 
 
 class CalendarTypeConverter {
 
     companion object {
-
-        private val sdf = SimpleDateFormat("yyyy-MM-dd-HH:mm:ss", Locale.CANADA)
 
         @JvmStatic
         @TypeConverter
@@ -18,7 +16,7 @@ class CalendarTypeConverter {
                 return null
             val cal = Calendar.getInstance()
             try {
-                cal.time = sdf.parse(calString.replace("Z", "").replace("T", "-"))
+                cal.time = DateUtil.outSdf.parse(calString.replace("Z", ""))
             } catch (ex: Exception) {
                 return null
             }
@@ -30,7 +28,7 @@ class CalendarTypeConverter {
         fun fromCalendar(calendar: Calendar?): String? {
             if (calendar == null)
                 return null
-            return sdf.format(calendar.time)
+            return DateUtil.outSdf.format(calendar.time)
         }
 
     }

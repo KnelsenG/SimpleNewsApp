@@ -20,8 +20,8 @@ class ArticleRepository @Inject constructor(
         private val remote: NewsRetrofit
 ) {
 
-    fun getAll(languageFilter: List<String> = emptyList()): LiveData<List<RoomArticle>> {
-        return local.getAll(languageFilter)
+    fun getAll(): LiveData<List<RoomArticle>> {
+        return local.getAll()
     }
 
     fun getEntity(url: String): LiveData<RoomArticle?> {
@@ -50,6 +50,7 @@ class ArticleRepository @Inject constructor(
                 val data = getAllFromRemote()
 
                 local.upsertAll(data)
+                local.trim()
 
                 status.postValue(DataStatus.Success)
             }
@@ -60,7 +61,7 @@ class ArticleRepository @Inject constructor(
 
     private suspend fun getAllFromRemote(): List<RoomArticle> {
 
-        val request = remote.latestNews()
+        val request = remote.getWithQuery()
         val response = request.await()
 
         if (!response.isSuccessful || !response.body()?.status.equals("ok")) {

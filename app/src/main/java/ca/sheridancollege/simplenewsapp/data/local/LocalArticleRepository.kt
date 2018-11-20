@@ -9,10 +9,8 @@ class LocalArticleRepository @Inject constructor(
         private val articleDAO: ArticleDAO
 ) {
 
-    fun getAll(
-            langaugeFilter: List<String>
-    ): LiveData<List<RoomArticle>> {
-        return articleDAO.allArticles(langaugeFilter)
+    fun getAll(): LiveData<List<RoomArticle>> {
+        return articleDAO.allArticles()
     }
 
     fun insertAll(all: List<RoomArticle>) {
@@ -33,5 +31,9 @@ class LocalArticleRepository @Inject constructor(
 
     fun search(query: String): LiveData<List<RoomArticle>> {
         return articleDAO.searchArticlesByTitle(query)
+    }
+
+    fun trim(){
+        articleDAO.trimByDate()
     }
 }

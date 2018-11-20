@@ -14,7 +14,6 @@ import ca.sheridancollege.simplenewsapp.base.BaseFragment
 import ca.sheridancollege.simplenewsapp.databinding.FragmentFeedBinding
 import ca.sheridancollege.simplenewsapp.ext.snack
 import ca.sheridancollege.simplenewsapp.ui.feedFragment.adapter.ArticleAdapter
-import ca.sheridancollege.simplenewsapp.ui.feedFragment.adapter.LanguageAdapter
 import ca.sheridancollege.simplenewsapp.util.DataStatus
 
 class FeedFragment : BaseFragment() {
@@ -23,7 +22,6 @@ class FeedFragment : BaseFragment() {
     private lateinit var viewModel: FeedViewModel
 
     private lateinit var articleAdapter: ArticleAdapter
-    private lateinit var languageAdapter: LanguageAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,10 +45,7 @@ class FeedFragment : BaseFragment() {
         val gridLayoutManager = GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false)
 
         if (!::articleAdapter.isInitialized) {
-            articleAdapter = ArticleAdapter(viewModel.articleClickListener)
-        }
-        if (!::languageAdapter.isInitialized) {
-            languageAdapter = LanguageAdapter(viewModel.languageClickListener)
+            articleAdapter = ArticleAdapter(linearLayoutManager, viewModel.articleClickListener)
         }
 
         binding.apply {
@@ -60,9 +55,6 @@ class FeedFragment : BaseFragment() {
             rvList.setHasFixedSize(true)
             rvList.layoutManager = linearLayoutManager
             rvList.swapAdapter(articleAdapter, true)
-
-            rvFilterLanguage.layoutManager = gridLayoutManager
-            rvFilterLanguage.swapAdapter(languageAdapter, true)
 
             swipeRefreshLayout.setOnRefreshListener(viewModel.refreshListener)
         }
@@ -74,11 +66,6 @@ class FeedFragment : BaseFragment() {
 
         viewModel.articleSource.observe(this, Observer {
             val adapter = binding.rvList.adapter as ArticleAdapter
-            it?.let { adapter.submitList(it) }
-        })
-
-        viewModel.languageSource.observe(this, Observer {
-            val adapter = binding.rvFilterLanguage.adapter as LanguageAdapter
             it?.let { adapter.submitList(it) }
         })
 
@@ -119,7 +106,7 @@ class FeedFragment : BaseFragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when(item?.itemId){
+        return when (item?.itemId) {
             R.id.miFilter -> {
                 viewModel.toggleFilter()
                 return true
