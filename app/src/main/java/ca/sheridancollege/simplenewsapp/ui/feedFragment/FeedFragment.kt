@@ -15,6 +15,7 @@ import ca.sheridancollege.simplenewsapp.databinding.FragmentFeedBinding
 import ca.sheridancollege.simplenewsapp.ext.snack
 import ca.sheridancollege.simplenewsapp.ui.feedFragment.adapter.ArticleAdapter
 import ca.sheridancollege.simplenewsapp.util.DataStatus
+import com.google.android.material.snackbar.Snackbar
 
 class FeedFragment : BaseFragment() {
 
@@ -64,9 +65,12 @@ class FeedFragment : BaseFragment() {
 
     private fun initObservables() {
 
-        viewModel.articleSource.observe(this, Observer {
-            val adapter = binding.rvList.adapter as ArticleAdapter
-            it?.let { adapter.submitList(it) }
+        viewModel.source.observe(this, Observer {
+            (binding.rvList.adapter as ArticleAdapter).submitList(it)
+        })
+
+        viewModel.emptyStatus.observe(this, Observer {
+            viewModel.isEmpty.set(it)
         })
 
         viewModel.articleOpenClickEvent.observe(this, Observer {
@@ -89,7 +93,7 @@ class FeedFragment : BaseFragment() {
         })
 
         viewModel.snack.observe(this, Observer {
-            snack(it)
+            snack(message = it, duration = Snackbar.LENGTH_SHORT)
         })
 
         viewModel.start()
@@ -103,16 +107,6 @@ class FeedFragment : BaseFragment() {
 
         val search = searchItem?.actionView as SearchView
         search.setOnQueryTextListener(viewModel.searchTextListener)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
-            R.id.miFilter -> {
-                viewModel.toggleFilter()
-                return true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     companion object {

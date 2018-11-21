@@ -22,7 +22,6 @@ class FeedViewModel @Inject constructor(
 
     val isRefreshing = ObservableBoolean(false)
     val isEmpty = ObservableBoolean(false)
-    val showFilter = ObservableBoolean(false)
 
     val articleOpenClickEvent = SingleLiveEvent<RoomArticle>()
     val snack = SingleLiveEvent<String>()
@@ -35,7 +34,7 @@ class FeedViewModel @Inject constructor(
     private val all: LiveData<List<RoomArticle>> = articleRepository.getAll()
     private val search: LiveData<List<RoomArticle>> = Transformations.switchMap(searchQuery) { articleRepository.search(it) }
 
-    val articleSource: LiveData<List<RoomArticle>> = Transformations.switchMap(
+    val source: LiveData<List<RoomArticle>> = Transformations.switchMap(
             feedToggle
     ) {
         when (feedToggle.value) {
@@ -45,13 +44,13 @@ class FeedViewModel @Inject constructor(
         }
     }
 
-    val emptyCheck: LiveData<Boolean> = Transformations.map(
-            articleSource
+    val emptyStatus: LiveData<Boolean> = Transformations.map(
+            source
     ) {
         it.isEmpty()
     }
 
-    val emptyMessageCheck: LiveData<FeedType> = Transformations.map(
+    val emptyMessage: LiveData<FeedType> = Transformations.map(
             feedToggle
     ) {
         it
@@ -126,9 +125,5 @@ class FeedViewModel @Inject constructor(
         } else {
             snack.postValue("Something went wrong...")
         }
-    }
-
-    fun toggleFilter() {
-        showFilter.set(!showFilter.get())
     }
 }
