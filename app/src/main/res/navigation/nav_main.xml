@@ -4,9 +4,9 @@
             android:id="@+id/nav_main"
             app:startDestination="@id/feedAlbumFragment">
     <fragment
-            android:id="@+id/feedAlbumFragment"
-            android:name="ca.sheridancollege.simplenewsapp.ui.feedFragment.FeedFragment"
-            android:label="FeedAlbumFragment">
+        android:id="@+id/feedAlbumFragment"
+        android:name="ca.sheridancollege.simplenewsapp.ui.feedFragment.FeedFragment"
+        android:label="Simple News">
         <action
             android:id="@+id/action_feedAlbumFragment_to_detailAlbumFragment"
             app:destination="@id/detailAlbumFragment"
@@ -17,10 +17,12 @@
             app:popUpTo="@+id/feedAlbumFragment" />
     </fragment>
     <fragment
-            android:id="@+id/detailAlbumFragment"
-            android:name="ca.sheridancollege.simplenewsapp.ui.detailAlbum.DetailFragment"
-            android:label="DetailAlbumFragment">
-        <argument android:name="ArticleUrl" app:argType="string"/>
+        android:id="@+id/detailAlbumFragment"
+        android:name="ca.sheridancollege.simplenewsapp.ui.detailAlbum.DetailFragment"
+        android:label="Article">
+        <argument
+            android:name="ArticleUrl"
+            app:argType="string" />
     </fragment>
 
 </navigation>
