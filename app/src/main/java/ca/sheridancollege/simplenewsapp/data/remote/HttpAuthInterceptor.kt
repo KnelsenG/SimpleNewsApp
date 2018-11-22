@@ -1,7 +1,5 @@
 package ca.sheridancollege.simplenewsapp.data.remote
 
-import android.content.SharedPreferences
-import ca.sheridancollege.simplenewsapp.ext.token
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
@@ -10,7 +8,7 @@ import java.io.IOException
  * Created by knelseng on 16/03/18.
  */
 
-class HttpAuthInterceptor(private val sharedPreferences: SharedPreferences) : Interceptor {
+class HttpAuthInterceptor : Interceptor {
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {

@@ -1,4 +1,4 @@
-package ca.sheridancollege.simplenewsapp.data.repo
+package ca.sheridancollege.simplenewsapp.data
 
 import android.content.Context
 import androidx.lifecycle.LiveData

@@ -9,7 +9,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import ca.sheridancollege.simplenewsapp.data.model.RoomArticle
-import ca.sheridancollege.simplenewsapp.data.repo.ArticleRepository
+import ca.sheridancollege.simplenewsapp.data.ArticleRepository
 import ca.sheridancollege.simplenewsapp.enums.FeedType
 import ca.sheridancollege.simplenewsapp.ui.feedFragment.adapter.ArticleClickListener
 import ca.sheridancollege.simplenewsapp.util.DataStatus
@@ -48,12 +48,6 @@ class FeedViewModel @Inject constructor(
             source
     ) {
         it.isEmpty()
-    }
-
-    val emptyMessage: LiveData<FeedType> = Transformations.map(
-            feedToggle
-    ) {
-        it
     }
 
     val updateStatus: LiveData<DataStatus> = Transformations.switchMap(

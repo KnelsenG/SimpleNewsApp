@@ -57,7 +57,7 @@ class RetrofitModule {
 
     @Provides
     fun provideHttpAuthInterceptor(sharedPreferences: SharedPreferences): HttpAuthInterceptor {
-        return HttpAuthInterceptor(sharedPreferences)
+        return HttpAuthInterceptor()
     }
 
     @Provides

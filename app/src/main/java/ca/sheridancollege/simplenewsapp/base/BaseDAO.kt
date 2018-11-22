@@ -1,4 +1,4 @@
-package ca.sheridancollege.simplenewsapp.data.local.dao
+package ca.sheridancollege.simplenewsapp.base
 
 import androidx.room.*
 

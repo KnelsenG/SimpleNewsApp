@@ -3,7 +3,7 @@ package ca.sheridancollege.simplenewsapp.ui.detailAlbum
 import androidx.databinding.ObservableField
 import androidx.lifecycle.*
 import ca.sheridancollege.simplenewsapp.data.model.RoomArticle
-import ca.sheridancollege.simplenewsapp.data.repo.ArticleRepository
+import ca.sheridancollege.simplenewsapp.data.ArticleRepository
 import ca.sheridancollege.simplenewsapp.util.SingleLiveEvent
 import javax.inject.Inject
 

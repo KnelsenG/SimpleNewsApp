@@ -43,7 +43,6 @@ class FeedFragment : BaseFragment() {
     private fun initBindings() {
 
         val linearLayoutManager = LinearLayoutManager(context)
-        val gridLayoutManager = GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false)
 
         if (!::articleAdapter.isInitialized) {
             articleAdapter = ArticleAdapter(linearLayoutManager, viewModel.articleClickListener)
