@@ -21,7 +21,6 @@
             android:id="@+id/swipeRefreshLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:visibility="@{vm.isEmpty ? View.GONE :View.VISIBLE}"
             app:is_refreshing="@{vm.isRefreshing}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

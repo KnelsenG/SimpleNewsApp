@@ -39,17 +39,11 @@ class ArticleAdapter(
                 DiffUtil.calculateDiff(DiffUtilCallBack(source, newList))
             }
             diffResult.await().let {
-                dispatchUpdates(it)
-                this@ArticleAdapter.source.clear()
-                this@ArticleAdapter.source.addAll(newList)
+                it.dispatchUpdatesTo(this@ArticleAdapter)
+                source.clear()
+                source.addAll(newList)
             }
         }
-    }
-
-    private fun dispatchUpdates(it: DiffUtil.DiffResult) {
-        val recyclerViewState = layoutManager?.onSaveInstanceState()
-        it.dispatchUpdatesTo(this)
-        layoutManager?.onRestoreInstanceState(recyclerViewState)
     }
 
     inner class ArticleViewHolder internal constructor(private val binding: RecyclerItemArticleBinding) : RecyclerView.ViewHolder(binding.root) {
