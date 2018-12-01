@@ -13,6 +13,7 @@ import ca.sheridancollege.simplenewsapp.data.ArticleRepository
 import ca.sheridancollege.simplenewsapp.enums.FeedType
 import ca.sheridancollege.simplenewsapp.ui.feedFragment.adapter.ArticleClickListener
 import ca.sheridancollege.simplenewsapp.util.DataStatus
+import ca.sheridancollege.simplenewsapp.util.Event
 import ca.sheridancollege.simplenewsapp.util.SingleLiveEvent
 import javax.inject.Inject
 
@@ -50,7 +51,7 @@ class FeedViewModel @Inject constructor(
         it.isEmpty()
     }
 
-    val updateStatus: LiveData<DataStatus> = Transformations.switchMap(
+    val updateStatus: LiveData<Event<DataStatus>> = Transformations.switchMap(
             refreshTrigger
     ) {
         articleRepository.updateData()

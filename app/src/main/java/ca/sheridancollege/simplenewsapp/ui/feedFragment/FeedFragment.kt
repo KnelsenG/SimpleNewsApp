@@ -7,7 +7,6 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import ca.sheridancollege.simplenewsapp.R
 import ca.sheridancollege.simplenewsapp.base.BaseFragment
@@ -15,6 +14,7 @@ import ca.sheridancollege.simplenewsapp.databinding.FragmentFeedBinding
 import ca.sheridancollege.simplenewsapp.ext.snack
 import ca.sheridancollege.simplenewsapp.ui.feedFragment.adapter.ArticleAdapter
 import ca.sheridancollege.simplenewsapp.util.DataStatus
+import ca.sheridancollege.simplenewsapp.util.EventObserver
 import com.google.android.material.snackbar.Snackbar
 
 class FeedFragment : BaseFragment() {
@@ -77,7 +77,7 @@ class FeedFragment : BaseFragment() {
             view?.findNavController()?.navigate(action)
         })
 
-        viewModel.updateStatus.observe(this, Observer {
+        viewModel.updateStatus.observe(this, EventObserver {
             when (it) {
                 is DataStatus.Loading -> {
                     viewModel.isRefreshing.set(true)

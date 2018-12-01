@@ -8,6 +8,8 @@ import ca.sheridancollege.simplenewsapp.data.model.RoomArticle
 import ca.sheridancollege.simplenewsapp.data.remote.NewsRetrofit
 import ca.sheridancollege.simplenewsapp.ext.isOnline
 import ca.sheridancollege.simplenewsapp.util.DataStatus
+import ca.sheridancollege.simplenewsapp.util.Event
+import ca.sheridancollege.simplenewsapp.util.SingleLiveEvent
 import ca.sheridancollege.simplenewsapp.util.typeConverters.CalendarTypeConverter
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -32,18 +34,18 @@ class ArticleRepository @Inject constructor(
         return local.search(query)
     }
 
-    fun updateData(): MutableLiveData<DataStatus> {
+    fun updateData(): MutableLiveData<Event<DataStatus>> {
 
-        val status = MutableLiveData<DataStatus>()
+        val status = MutableLiveData<Event<DataStatus>>()
 
         GlobalScope.launch {
 
-            status.postValue(DataStatus.Loading)
+            status.postValue(Event(DataStatus.Loading))
 
             if (!context.isOnline()) {
 
                 delay(1000)
-                status.postValue(DataStatus.Error("No Internet"))
+                status.postValue(Event(DataStatus.Error("No Internet")))
 
             } else {
 
@@ -52,7 +54,7 @@ class ArticleRepository @Inject constructor(
                 local.upsertAll(data)
                 local.trim()
 
-                status.postValue(DataStatus.Success)
+                status.postValue(Event(DataStatus.Success))
             }
         }
 

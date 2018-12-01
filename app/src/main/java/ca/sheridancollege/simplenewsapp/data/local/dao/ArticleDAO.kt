@@ -16,7 +16,7 @@ abstract class ArticleDAO : BaseDao<RoomArticle>() {
     @Query("SELECT * FROM RoomArticle WHERE url=:url")
     abstract fun articleById(url: String): LiveData<RoomArticle?>
 
-    @Query("SELECT * FROM RoomArticle WHERE title LIKE :title")
+    @Query("SELECT * FROM RoomArticle WHERE title LIKE :title ORDER BY published DESC")
     abstract fun searchArticlesByTitle(title: String): LiveData<List<RoomArticle>>
 
     @Query("DELETE FROM RoomArticle WHERE published < :cutOff")

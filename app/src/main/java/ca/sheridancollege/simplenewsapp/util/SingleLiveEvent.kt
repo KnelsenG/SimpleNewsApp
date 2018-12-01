@@ -29,7 +29,6 @@ class SingleLiveEvent<T> : MutableLiveData<T>() {
     override fun observe(owner: LifecycleOwner, observer: Observer<in T>) {
 
         if (hasActiveObservers()) {
-//            removeObservers(owner)
             Log.v("SingleLiveEvent", "SingleLiveEvent: Multiple observers registered but only one will be notified of changes.")
         }
 
@@ -38,6 +37,11 @@ class SingleLiveEvent<T> : MutableLiveData<T>() {
                 observer.onChanged(it)
             }
         })
+    }
+
+    override fun postValue(@Nullable value: T) {
+        mPending.set(true)
+        super.postValue(value)
     }
 
     @MainThread

@@ -37,12 +37,10 @@
                     android:adjustViewBounds="false"
                     android:scaleType="centerCrop"
                     app:glide_image="@{article.image}"
-                    app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_chainStyle="packed" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayout"
@@ -52,9 +50,7 @@
                     android:padding="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/imageView"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="@+id/imageView"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView">
+                    app:layout_constraintStart_toStartOf="@+id/imageView">
 
                     <TextView
                         android:id="@+id/tvArticleName"
@@ -64,14 +60,14 @@
                         android:gravity="start"
                         android:maxLines="2"
                         android:text="@{article.title}"
-                        android:textColor="@android:color/black"
+                        android:textColor="@android:color/white"
                         android:textSize="20sp"
                         android:textStyle="normal"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="This is a really long name that doesn't need to be this long because it is really long" />
+                        tools:text="This is a really long name that doesn't need to be this long becauses it is really long" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
