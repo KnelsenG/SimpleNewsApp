@@ -16,9 +16,6 @@ data class RoomArticle(
         var title: String
 ) : Comparable<Article> {
     override fun compareTo(other: Article): Int {
-        return when (this.url.equals(other.url, true)) {
-            true -> 0
-            false -> 1
-        }
+        return this.url.compareTo(other.url, false)
     }
 }

@@ -8,8 +8,6 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'androidx.navigation.safeargs'
 
-apply plugin: 'com.getkeepsafe.dexcount'
-
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -95,19 +93,4 @@ dependencies {
     implementation 'jp.wasabeef:glide-transformations:3.3.0'
 
     implementation 'com.android.support:customtabs:28.0.0'
-}
-
-dexcount {
-    format = "list"
-    includeClasses = false
-    includeClassCount = false
-    includeFieldCount = true
-    includeTotalMethodCount = false
-    orderByMethodCount = false
-    verbose = false
-    maxTreeDepth = Integer.MAX_VALUE
-    teamCityIntegration = false
-    teamCitySlug = null
-    runOnEachPackage = true
-    maxMethodCount = 64000
 }

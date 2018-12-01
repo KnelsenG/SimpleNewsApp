@@ -13,14 +13,6 @@ class LocalArticleRepository @Inject constructor(
         return articleDAO.allArticles()
     }
 
-    fun insertAll(all: List<RoomArticle>) {
-        articleDAO.insert(all)
-    }
-
-    fun updateAll(all: List<RoomArticle>) {
-        articleDAO.update(all)
-    }
-
     fun upsertAll(all: List<RoomArticle>) {
         articleDAO.upsert(all)
     }
