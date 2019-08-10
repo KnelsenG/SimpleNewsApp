@@ -9,7 +9,6 @@ import ca.sheridancollege.simplenewsapp.data.remote.NewsRetrofit
 import ca.sheridancollege.simplenewsapp.ext.isOnline
 import ca.sheridancollege.simplenewsapp.util.DataStatus
 import ca.sheridancollege.simplenewsapp.util.Event
-import ca.sheridancollege.simplenewsapp.util.SingleLiveEvent
 import ca.sheridancollege.simplenewsapp.util.typeConverters.CalendarTypeConverter
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -17,9 +16,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ArticleRepository @Inject constructor(
-        private val context: Context,
-        private val local: LocalArticleRepository,
-        private val remote: NewsRetrofit
+    private val context: Context,
+    private val local: LocalArticleRepository,
+    private val remote: NewsRetrofit
 ) {
 
     fun getAll(): LiveData<List<RoomArticle>> {
@@ -63,8 +62,7 @@ class ArticleRepository @Inject constructor(
 
     private suspend fun getAllFromRemote(): List<RoomArticle> {
 
-        val request = remote.getWithQuery()
-        val response = request.await()
+        val response = remote.getWithQuery()
 
         if (!response.isSuccessful || !response.body()?.status.equals("ok")) {
             return emptyList()
@@ -72,13 +70,13 @@ class ArticleRepository @Inject constructor(
 
         return response.body()?.news?.map { article ->
             RoomArticle(
-                    article.url,
-                    article.author,
-                    article.description,
-                    article.image,
-                    article.language,
-                    CalendarTypeConverter.toCalendar(article.published),
-                    article.title
+                article.url,
+                article.author,
+                article.description,
+                article.image,
+                article.language,
+                CalendarTypeConverter.toCalendar(article.published),
+                article.title
             )
         } ?: emptyList()
     }

@@ -13,7 +13,6 @@ import ca.sheridancollege.simplenewsapp.base.BaseActivity
 class MainActivity : BaseActivity() {
 
     private lateinit var viewModel: MainActivityViewModel
-//    private lateinit var mainActivityBinding: MainActivityBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

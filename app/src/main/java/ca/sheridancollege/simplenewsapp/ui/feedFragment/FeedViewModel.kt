@@ -11,7 +11,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import ca.sheridancollege.simplenewsapp.data.model.RoomArticle
 import ca.sheridancollege.simplenewsapp.data.ArticleRepository
 import ca.sheridancollege.simplenewsapp.enums.FeedType
-import ca.sheridancollege.simplenewsapp.ui.feedFragment.adapter.ArticleClickListener
+import ca.sheridancollege.simplenewsapp.ui.feedFragment.adapter.ClickListener
 import ca.sheridancollege.simplenewsapp.util.DataStatus
 import ca.sheridancollege.simplenewsapp.util.Event
 import ca.sheridancollege.simplenewsapp.util.SingleLiveEvent
@@ -57,10 +57,10 @@ class FeedViewModel @Inject constructor(
         articleRepository.updateData()
     }
 
-    val articleClickListener: ArticleClickListener by lazy {
-        object : ArticleClickListener {
-            override fun onArticleClick(article: RoomArticle) {
-                articleOpenClickEvent.setValue(article)
+    val clickListener: ClickListener<RoomArticle> by lazy {
+        object : ClickListener<RoomArticle> {
+            override fun onClick(item: RoomArticle) {
+                articleOpenClickEvent.setValue(item)
             }
         }
     }

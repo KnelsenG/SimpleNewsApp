@@ -48,7 +48,7 @@ class DetailFragment : BaseFragment() {
             customTab.showTab(it)
         })
 
-        viewModel.start(DetailFragmentArgs.fromBundle(arguments).articleUrl)
+        viewModel.start(DetailFragmentArgs.fromBundle(arguments!!).articleUrl)
     }
 
     companion object {

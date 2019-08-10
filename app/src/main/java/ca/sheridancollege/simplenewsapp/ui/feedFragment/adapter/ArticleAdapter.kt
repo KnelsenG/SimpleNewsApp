@@ -3,7 +3,6 @@ package ca.sheridancollege.simplenewsapp.ui.feedFragment.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ca.sheridancollege.simplenewsapp.data.model.RoomArticle
 import ca.sheridancollege.simplenewsapp.databinding.RecyclerItemArticleBinding
@@ -14,8 +13,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class ArticleAdapter(
-        private val layoutManager: LinearLayoutManager,
-        private val clickListener: ArticleClickListener
+    private val clickListener: ClickListener<RoomArticle>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var source = mutableListOf<RoomArticle>()
@@ -48,9 +46,9 @@ class ArticleAdapter(
 
     inner class ArticleViewHolder internal constructor(private val binding: RecyclerItemArticleBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(article: RoomArticle, articleClickListener: ArticleClickListener) {
+        fun bind(article: RoomArticle, clickListener: ClickListener<RoomArticle>) {
             binding.article = article
-            binding.clickListener = articleClickListener
+            binding.clickListener = clickListener
             binding.executePendingBindings()
         }
     }

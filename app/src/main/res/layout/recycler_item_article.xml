@@ -10,7 +10,7 @@
 
         <variable
             name="clickListener"
-            type="ca.sheridancollege.simplenewsapp.ui.feedFragment.adapter.ArticleClickListener" />
+            type="ca.sheridancollege.simplenewsapp.ui.feedFragment.adapter.ClickListener" />
     </data>
 
     <FrameLayout
@@ -27,7 +27,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:onClick="@{()->clickListener.onArticleClick(article)}"
+                android:onClick="@{()->clickListener.onClick(article)}"
                 android:orientation="horizontal">
 
                 <ImageView

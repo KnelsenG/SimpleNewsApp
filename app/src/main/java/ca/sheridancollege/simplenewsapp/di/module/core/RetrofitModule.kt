@@ -1,10 +1,8 @@
 package ca.sheridancollege.simplenewsapp.di.module.core
 
 import android.content.Context
-import android.content.SharedPreferences
 import ca.sheridancollege.simplenewsapp.data.remote.HttpAuthInterceptor
 import ca.sheridancollege.simplenewsapp.data.remote.NewsRetrofit
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import okhttp3.Cache
@@ -13,7 +11,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -21,19 +18,17 @@ class RetrofitModule {
 
     @Provides
     @Singleton
-    fun provideHipsrvRetrofit(@Named("Auth") okHttpClient: OkHttpClient): NewsRetrofit {
+    fun provideNewsRetrofit(okHttpClient: OkHttpClient): NewsRetrofit {
         val retrofit = Retrofit.Builder()
             .baseUrl(NewsRetrofit.BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .build()
 
         return retrofit.create(NewsRetrofit::class.java)
     }
 
     @Provides
-    @Named("Auth")
     @Singleton
     fun provideAuthHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,

@@ -3,7 +3,6 @@ package ca.sheridancollege.simplenewsapp.data.remote
 import ca.sheridancollege.simplenewsapp.data.model.News
 import ca.sheridancollege.simplenewsapp.ext.toRFC3339
 import ca.sheridancollege.simplenewsapp.util.DateUtil
-import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -26,13 +25,13 @@ interface NewsRetrofit {
     }
 
     @GET("latest-news/")
-    fun latestNews(): Deferred<Response<News>>
+    suspend fun latestNews(): Response<News>
 
     @GET("search/")
-    fun getWithQuery(
-            @Query(QUERY_START_DATE) start: String = DateUtil.weekAgo.toRFC3339(),
-            @Query(QUERY_END_DATE) end: String = DateUtil.today.toRFC3339(),
-            @Query(QUERY_LANGUAGE) language: String = "en"
-    ): Deferred<Response<News>>
+    suspend fun getWithQuery(
+        @Query(QUERY_START_DATE) start: String = DateUtil.weekAgo.toRFC3339(),
+        @Query(QUERY_LANGUAGE) language: String = "en",
+        @Query(QUERY_END_DATE) end: String = DateUtil.today.toRFC3339()
+    ): Response<News>
 
 }

@@ -45,7 +45,7 @@ class FeedFragment : BaseFragment() {
         val linearLayoutManager = LinearLayoutManager(context)
 
         if (!::articleAdapter.isInitialized) {
-            articleAdapter = ArticleAdapter(linearLayoutManager, viewModel.articleClickListener)
+            articleAdapter = ArticleAdapter(viewModel.clickListener)
         }
 
         binding.apply {
