@@ -1,0 +1,2 @@
+# SimpleNewsApp
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a8ade4b2c757489787721e507f1eb1b7)](https://app.codacy.com/app/KnelsenG/SimpleNewsApp?utm_source=github.com&utm_medium=referral&utm_content=KnelsenG/SimpleNewsApp&utm_campaign=Badge_Grade_Dashboard)
